@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  Netology_IB_Instruments
+//  HW1IosDev
 //
-//  Created by Anna Tsvetkova on 08.03.2022.
+//  Created by Anna Tsvetkova on 10.03.2022.
 //
 
 import UIKit
