@@ -9,9 +9,12 @@ import UIKit
 
 class InfoViewController: UIViewController {
 
+    @IBOutlet weak var showAlertButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        showAlertButton.layer.cornerRadius = showAlertButton.frame.width*0.1
+        showAlertButton.layer.masksToBounds = true
+        
         // Do any additional setup after loading the view.
     }
     

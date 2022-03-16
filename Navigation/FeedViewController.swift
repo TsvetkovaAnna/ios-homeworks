@@ -9,9 +9,11 @@ import UIKit
 
 class FeedViewController: UIViewController {
 
+    @IBOutlet weak var openPostButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        openPostButton.layer.cornerRadius = openPostButton.frame.width*0.1
+        openPostButton.layer.masksToBounds = true
         
     }
     

@@ -52,11 +52,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M0R-7N-ZX4">
-                                <rect key="frame" x="157" y="423" width="100" height="50"/>
+                                <rect key="frame" x="132" y="423" width="150" height="50"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Vwe-uJ-2iM"/>
-                                    <constraint firstAttribute="width" constant="100" id="c8Y-mb-Y9w"/>
+                                    <constraint firstAttribute="width" constant="150" id="c8Y-mb-Y9w"/>
                                 </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
@@ -74,6 +74,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="p6e-Gv-z7x"/>
+                    <connections>
+                        <outlet property="openPostButton" destination="M0R-7N-ZX4" id="CAz-a7-Us7"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Owd-lH-LCX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -87,7 +90,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="ef8-4W-hlS"/>
-                        <color key="backgroundColor" systemColor="systemGray2Color"/>
+                        <color key="backgroundColor" systemColor="systemGreenColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="11v-Xc-64m">
                         <barButtonItem key="rightBarButtonItem" title="Item" image="info.circle.fill" catalog="system" id="6PU-lj-Ph2">
@@ -110,11 +113,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s1B-97-tUM">
-                                <rect key="frame" x="157" y="778" width="100" height="50"/>
+                                <rect key="frame" x="132" y="778" width="150" height="50"/>
                                 <color key="backgroundColor" systemColor="systemGreenColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="5Nj-fV-GgE"/>
-                                    <constraint firstAttribute="width" constant="100" id="Lyj-do-oK5"/>
+                                    <constraint firstAttribute="width" constant="150" id="Lyj-do-oK5"/>
                                 </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
@@ -131,10 +134,13 @@
                             <constraint firstItem="s1B-97-tUM" firstAttribute="bottom" secondItem="aGZ-7W-Q0z" secondAttribute="bottom" constant="20" id="5tw-eK-7I1"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="showAlertButton" destination="s1B-97-tUM" id="5Vc-5S-0rg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OxH-tv-aFa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1936" y="374"/>
+            <point key="canvasLocation" x="2036" y="368"/>
         </scene>
         <!--Profile-->
         <scene sceneID="pOL-QI-8tw">
@@ -176,9 +182,6 @@
         <image name="person.circle.fill" catalog="system" width="128" height="121"/>
         <systemColor name="systemBrownColor">
             <color red="0.63529411764705879" green="0.51764705882352946" blue="0.36862745098039218" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemGray2Color">
-            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGreenColor">
             <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
