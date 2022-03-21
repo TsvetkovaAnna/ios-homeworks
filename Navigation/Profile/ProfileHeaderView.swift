@@ -14,7 +14,7 @@ class ProfileHeaderView: UIView {
     var statusText: String?
     
     override func draw(_ rect: CGRect) {
-        let avatar = UIImageView(image: UIImage(named: "turtle2"))
+        let avatar = UIImageView(image: UIImage(named: "Nota"))
         
         avatar.layer.cornerRadius = 50
         avatar.layer.masksToBounds = true // commented
@@ -52,7 +52,7 @@ class ProfileHeaderView: UIView {
         myButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         
         let nameLabel = UILabel()
-        nameLabel.text = "Indi Turtle"
+        nameLabel.text = "6th Note"
         nameLabel.textColor = .black
         nameLabel.font = UIFont.boldSystemFont(ofSize: 18)
         addSubview(nameLabel)
