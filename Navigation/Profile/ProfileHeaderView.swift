@@ -9,117 +9,142 @@ import UIKit
 
 class ProfileHeaderView: UIView {
 
-    var statusLabel: UILabel?
-    var textField: UITextField?
-    var statusText: String?
+    private var buttonTopConstraint: NSLayoutConstraint?
+    var isExpanded = true
     
-    override func draw(_ rect: CGRect) {
+    private lazy var myButton: UIButton = {
+        let myButton = UIButton()
+        myButton.layer.cornerRadius = 4
+        //myButton.layer.masksToBounds = true // commented
+        myButton.backgroundColor = .blue
+        myButton.tintColor = .white
+        myButton.setTitle("Show status", for: .normal)
+        myButton.layer.shadowOffset = CGSize(width: 4, height: 4)
+        myButton.layer.shadowColor = UIColor.black.cgColor
+        myButton.layer.shadowRadius = 4
+        myButton.layer.shadowOpacity = 0.7
+        myButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
+        myButton.translatesAutoresizingMaskIntoConstraints = false
+        return myButton
+    }()
+    
+    private lazy var statusLabel: UILabel = {
+        let statusLabel = UILabel()
+        statusLabel.textColor = .gray
+        statusLabel.text = "Waiting for smth"
+        statusLabel.translatesAutoresizingMaskIntoConstraints = false
+        return statusLabel
+    }()
+    
+    private lazy var nameLabel: UILabel = {
+        let nameLabel = UILabel()
+        nameLabel.text = "6th Note"
+        nameLabel.textColor = .black
+        nameLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        return nameLabel
+    }()
+    
+    private lazy var textField: UITextField = {
+        let textField = UITextField()
+        textField.layer.cornerRadius = 12
+        textField.layer.masksToBounds = true
+        textField.backgroundColor = .white
+        textField.tintColor = .black
+        textField.font = UIFont.systemFont(ofSize: 15)
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = UIColor.black.cgColor
+        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: textField.frame.height))
+        textField.leftViewMode = .always
+        textField.placeholder = "Enter your status"
+        textField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }()
+    
+    private lazy var avatar: UIImageView = {
         let avatar = UIImageView(image: UIImage(named: "Nota"))
-        
         avatar.layer.cornerRadius = 50
         avatar.layer.masksToBounds = true // commented
         avatar.contentMode = .scaleAspectFill
         avatar.layer.borderWidth = 3
         avatar.layer.borderColor = UIColor.white.cgColor
-        addSubview(avatar)
-        
-        NSLayoutConstraint(item: avatar, attribute: .top, relatedBy: .equal, toItem: self.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 16).isActive = true
-        NSLayoutConstraint(item: avatar, attribute: .leading, relatedBy: .equal, toItem: self.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 16).isActive = true
-        NSLayoutConstraint(item: avatar, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100).isActive = true
-        NSLayoutConstraint(item: avatar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100).isActive = true
         avatar.translatesAutoresizingMaskIntoConstraints = false
-        
-        let myButton  = UIButton()
-        myButton.layer.cornerRadius = 4
-        //myButton.layer.masksToBounds = true // commented
-        myButton.backgroundColor = .blue
-        myButton.tintColor = .white
-        //myButton.titleLabel?.text = "Show Status"
-        myButton.setTitle("Show status", for: .normal)
-        addSubview(myButton)
-        
-        myButton.layer.shadowOffset = CGSize(width: 4, height: 4)
-        myButton.layer.shadowColor = UIColor.black.cgColor
-        myButton.layer.shadowRadius = 4
-        myButton.layer.shadowOpacity = 0.7
-        
-        NSLayoutConstraint(item: myButton, attribute: .top, relatedBy: .equal, toItem: self.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 183).isActive = true
-        NSLayoutConstraint(item: myButton, attribute: .leading, relatedBy: .equal, toItem: self.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 16).isActive = true
-        NSLayoutConstraint(item: myButton, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0).isActive = true
-        NSLayoutConstraint(item: myButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 50).isActive = true
-        myButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        myButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
-        
-        let nameLabel = UILabel()
-        nameLabel.text = "6th Note"
-        nameLabel.textColor = .black
-        nameLabel.font = UIFont.boldSystemFont(ofSize: 18)
-        addSubview(nameLabel)
-        
-        NSLayoutConstraint(item: nameLabel, attribute: .top, relatedBy: .equal, toItem: self.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 27).isActive = true
-        NSLayoutConstraint(item: nameLabel, attribute: .leading, relatedBy: .equal, toItem: avatar, attribute: .trailing, multiplier: 1, constant: 16).isActive = true
-        NSLayoutConstraint(item: nameLabel, attribute: .trailing, relatedBy: .equal, toItem: self.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: -16).isActive = true
-        NSLayoutConstraint(item: nameLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        statusLabel = UILabel()
-        statusLabel?.textColor = .gray
-        statusLabel?.text = "Waiting for smth"
-        if let status = statusLabel {
-            addSubview(status)
-        }
-        
-        NSLayoutConstraint(item: statusLabel!, attribute: .top, relatedBy: .equal, toItem: nameLabel, attribute: .bottom, multiplier: 1, constant: 25).isActive = true
-        NSLayoutConstraint(item: statusLabel!, attribute: .leading, relatedBy: .equal, toItem: avatar, attribute: .trailing, multiplier: 1, constant: 16).isActive = true
-        NSLayoutConstraint(item: statusLabel!, attribute: .trailing, relatedBy: .equal, toItem: self.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: -16).isActive = true
-        NSLayoutConstraint(item: statusLabel!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 30).isActive = true
-        statusLabel!.translatesAutoresizingMaskIntoConstraints = false
-        
-        textField = UITextField()
-        //status?.text = "Waiting for smth"
-        
-        if let textFieldd = textField {
-            textFieldd.layer.cornerRadius = 12
-            textFieldd.layer.masksToBounds = true
-            textFieldd.backgroundColor = .white
-            textFieldd.tintColor = .black
-            textFieldd.font = UIFont.systemFont(ofSize: 15)
-            textFieldd.layer.borderWidth = 1
-            textFieldd.layer.borderColor = UIColor.black.cgColor
-            textFieldd.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: textFieldd.frame.height))
-            textFieldd.leftViewMode = .always
-            textFieldd.placeholder = "Enter your status"
-            addSubview(textFieldd)
-        }
-       
-        textField?.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
-        
-       
-        
-        NSLayoutConstraint(item: textField!, attribute: .top, relatedBy: .equal, toItem: statusLabel!, attribute: .bottom, multiplier: 1, constant: 16).isActive = true
-        NSLayoutConstraint(item: textField!, attribute: .leading, relatedBy: .equal, toItem: avatar, attribute: .trailing, multiplier: 1, constant: 16).isActive = true
-        NSLayoutConstraint(item: textField!, attribute: .trailing, relatedBy: .equal, toItem: self.safeAreaLayoutGuide, attribute: .trailing, multiplier: 1, constant: -16).isActive = true
-        NSLayoutConstraint(item: textField!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40).isActive = true
-        
-        
-        textField!.translatesAutoresizingMaskIntoConstraints = false
-        
-        textField?.backgroundColor = .white
+        return avatar
+    }()
+    
+    var statusText: String?
+    
+    weak var delegate: ProfileHeaderViewDelegate?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        drawSelf()
     }
     
+    private func drawSelf() {
+        
+        addSubview(avatar)
+        let avaTopConstraint = NSLayoutConstraint(item: avatar, attribute: .top, relatedBy: .equal, toItem: self.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 16)
+        let avaLeadingConstraint = NSLayoutConstraint(item: avatar, attribute: .leading, relatedBy: .equal, toItem: self.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 16)
+        let avaWidthConstraint = NSLayoutConstraint(item: avatar, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100)
+        let avaHeightConstraint = NSLayoutConstraint(item: avatar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100)
+        
+        addSubview(myButton)
+        buttonTopConstraint = myButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 167)
+        let buttonLeadingConstraint = myButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16)
+        let buttonWidthConstraint = myButton.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor, constant: 0)
+        let buttonHeightConstraint = myButton.heightAnchor.constraint(equalToConstant: 50)
+         
+        addSubview(nameLabel)
+        let nameLabelTopConstraint = nameLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 27)
+        let nameLabelLeadingConstraint = nameLabel.leadingAnchor.constraint(equalTo: avatar.trailingAnchor, constant: 16)
+        let nameLabelTrailingConstraint = nameLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+        let nameLabelHeightConstraint = nameLabel.heightAnchor.constraint(equalToConstant: 30)
+                
+        addSubview(statusLabel)
+        let statusTopConstraint = statusLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 70)
+        let statusLeadingConstraint = statusLabel.leadingAnchor.constraint(equalTo: avatar.trailingAnchor, constant: 16)
+        let statusTrailingConstraint = statusLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+        let statusHeightConstraint = statusLabel.heightAnchor.constraint(equalToConstant: 30)
+           
+        addSubview(textField)
+        let textFieldTopConstraint = textField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 16)
+        let textFieldLeadingConstraint = textField.leadingAnchor.constraint(equalTo: avatar.trailingAnchor, constant: 16)
+        let textFieldTrailingConstraint = textField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+        let textFieldHeightConstraint = textField.heightAnchor.constraint(equalToConstant: 40)
+        
+        NSLayoutConstraint.activate([avaTopConstraint, avaLeadingConstraint, avaWidthConstraint, avaHeightConstraint, buttonTopConstraint, buttonWidthConstraint, buttonHeightConstraint, buttonLeadingConstraint, nameLabelTopConstraint, nameLabelHeightConstraint, nameLabelLeadingConstraint, nameLabelTrailingConstraint, statusTopConstraint, statusHeightConstraint, statusLeadingConstraint, statusTrailingConstraint, textFieldTopConstraint, textFieldHeightConstraint, textFieldLeadingConstraint, textFieldTrailingConstraint].compactMap({ $0 }))
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     @objc private func didTapButton() {
-        guard let statusLabell = statusLabel, let text = statusLabell.text else { return }
-        print(text)
-        if statusText != nil {
-            statusLabel?.text = statusText
-            textField?.text = ""
+//        guard let statusLabell = statusLabel, let text = statusLabell.text else { return }
+        if statusText != nil && isExpanded {
+            statusLabel.text = statusText
+            textField.text = ""
+        }
+        
+        delegate?.statusButtonPressed(isTextFieldVisible: textField.isHidden, completion: {
+            self.textField.isHidden.toggle()
+        })
+        
+        buttonTopConstraint?.constant = isExpanded ? 127 : 167
+        
+        UIView.animate(withDuration: 0.3) {
+            self.layoutIfNeeded()
+            self.textField.alpha = self.isExpanded ? 0 : 1
+        } completion: {_ in
+            self.isExpanded.toggle()
         }
     }
+
     
     @objc private func statusTextChanged() {
-        guard let textField = textField else { return }
         statusText = textField.text
     }
 }
+

@@ -1,24 +1,38 @@
-//
-//  InfoViewController.swift
-//  Navigation
-//
-//  Created by Anna Tsvetkova on 15.03.2022.
-//
-
 import UIKit
 
 class InfoViewController: UIViewController {
 
-    @IBOutlet weak var showAlertButton: UIButton!
+    lazy var alertButton: UIButton = {
+        let alertButton = RoundedButton(cornerRadius: UIScreen.main.bounds.width * 0.05)
+        alertButton.addTarget(self, action: #selector(showAlert), for: .touchUpInside)
+        alertButton.backgroundColor = .systemCyan
+        alertButton.tintColor = .orange
+        alertButton.setTitle("Show Alert", for: .normal)
+        return alertButton
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        showAlertButton.layer.cornerRadius = showAlertButton.frame.width*0.1
-        showAlertButton.layer.masksToBounds = true
+        view.backgroundColor = .orange
+        alertButtonConstraints()
+        //showAlert()
+//        showAlertButton.layer.cornerRadius = showAlertButton.frame.width*0.1
+//        showAlertButton.layer.masksToBounds = true
         
         // Do any additional setup after loading the view.
     }
     
-    @IBAction func showAlert(_ sender: UIButton) {
+    func alertButtonConstraints() {
+        view.addSubview(alertButton)
+        let leadingConstraint = alertButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
+        let trailingConstraint = alertButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+        let bottomConstraint = alertButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16)
+        let heightConstraint = alertButton.heightAnchor.constraint(equalToConstant: 50)
+        
+        NSLayoutConstraint.activate([leadingConstraint, trailingConstraint, bottomConstraint, heightConstraint])
+    }
+    
+    @objc func showAlert(/*_ sender: UIButton*/) {
         let alertController = UIAlertController(title: "Some info", message: "second home work", preferredStyle: .alert)
         let ok = UIAlertAction(title: "ok", style: .default) { _ in
             print("ok pushed")
