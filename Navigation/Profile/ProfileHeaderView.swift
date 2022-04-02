@@ -16,7 +16,7 @@ class ProfileHeaderView: UIView {
         let myButton = UIButton()
         myButton.layer.cornerRadius = 4
         //myButton.layer.masksToBounds = true // commented
-        myButton.backgroundColor = .blue
+        myButton.backgroundColor = .systemCyan
         myButton.tintColor = .white
         myButton.setTitle("Show status", for: .normal)
         myButton.layer.shadowOffset = CGSize(width: 4, height: 4)

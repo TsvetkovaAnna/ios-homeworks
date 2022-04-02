@@ -17,6 +17,14 @@ class ProfileViewController: UIViewController {
         
     var heightButtonConstraint: NSLayoutConstraint?
     
+    private lazy var downButton: UIButton = {
+        let downButton = UIButton()
+        downButton.backgroundColor = .systemCyan
+        downButton.setTitle("Just Button", for: .normal)
+        downButton.translatesAutoresizingMaskIntoConstraints = false
+        return downButton
+    }()
+    
     lazy var profileHeaderView: ProfileHeaderView = {
         let profileHeaderView = ProfileHeaderView(frame: .zero)
         profileHeaderView.delegate = self
@@ -30,6 +38,16 @@ class ProfileViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
         title = "Profile"
         setupHeaderView()
+        setupDownButton()
+    }
+    
+    private func setupDownButton() {
+        view.addSubview(downButton)
+        let downButtonBottom = downButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        let downButtonLeading = downButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
+        let downButtonTrailing = downButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+        let downButtonHeight = downButton.heightAnchor.constraint(equalToConstant: 50)
+        NSLayoutConstraint.activate([downButtonBottom, downButtonHeight, downButtonLeading, downButtonTrailing])
     }
     
     private func setupHeaderView() {
