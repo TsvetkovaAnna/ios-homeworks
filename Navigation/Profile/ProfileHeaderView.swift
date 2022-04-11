@@ -16,7 +16,7 @@ class ProfileHeaderView: UIView {
         let myButton = UIButton()
         myButton.layer.cornerRadius = 4
         //myButton.layer.masksToBounds = true // commented
-        myButton.backgroundColor = .systemCyan
+        myButton.backgroundColor = UIColor(named: "AccentColor")//.systemCyan
         myButton.tintColor = .white
         myButton.setTitle("Show status", for: .normal)
         myButton.layer.shadowOffset = CGSize(width: 4, height: 4)
@@ -45,8 +45,8 @@ class ProfileHeaderView: UIView {
         return nameLabel
     }()
     
-    private lazy var textField: UITextField = {
-        let textField = UITextField()
+    private lazy var textField: IndentTextField = {
+        let textField = IndentTextField()
         textField.layer.cornerRadius = 12
         textField.layer.masksToBounds = true
         textField.backgroundColor = .white
@@ -54,8 +54,8 @@ class ProfileHeaderView: UIView {
         textField.font = UIFont.systemFont(ofSize: 15)
         textField.layer.borderWidth = 1
         textField.layer.borderColor = UIColor.black.cgColor
-        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: textField.frame.height))
-        textField.leftViewMode = .always
+//        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: textField.frame.height))
+//        textField.leftViewMode = .always
         textField.placeholder = "Enter your status"
         textField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -77,13 +77,25 @@ class ProfileHeaderView: UIView {
     
     weak var delegate: ProfileHeaderViewDelegate?
     
+    private lazy var tapRecognizer: UITapGestureRecognizer = {
+        UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         drawSelf()
+        self.addGestureRecognizer(tapRecognizer)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    deinit {
+        self.removeGestureRecognizer(tapRecognizer)
     }
     
     private func drawSelf() {
-        
+        backgroundColor = .systemGray6
         addSubview(avatar)
         let avaTopConstraint = NSLayoutConstraint(item: avatar, attribute: .top, relatedBy: .equal, toItem: self.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 16)
         let avaLeadingConstraint = NSLayoutConstraint(item: avatar, attribute: .leading, relatedBy: .equal, toItem: self.safeAreaLayoutGuide, attribute: .leading, multiplier: 1, constant: 16)
@@ -117,12 +129,16 @@ class ProfileHeaderView: UIView {
         NSLayoutConstraint.activate([avaTopConstraint, avaLeadingConstraint, avaWidthConstraint, avaHeightConstraint, buttonTopConstraint, buttonWidthConstraint, buttonHeightConstraint, buttonLeadingConstraint, nameLabelTopConstraint, nameLabelHeightConstraint, nameLabelLeadingConstraint, nameLabelTrailingConstraint, statusTopConstraint, statusHeightConstraint, statusLeadingConstraint, statusTrailingConstraint, textFieldTopConstraint, textFieldHeightConstraint, textFieldLeadingConstraint, textFieldTrailingConstraint].compactMap({ $0 }))
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+    @objc private func viewTapped() {
+        self.endEditing(true)
     }
     
     @objc private func didTapButton() {
 //        guard let statusLabell = statusLabel, let text = statusLabell.text else { return }
+        self.endEditing(true)
         if statusText != nil && isExpanded {
             statusLabel.text = statusText
             textField.text = ""
