@@ -1,9 +1,4 @@
-//
-//  DynamicArticleTableViewCell.swift
-//  UITableViewProject
-//
-//  Created by Саидов Тимур on 18.02.2022.
-//
+
 
 import UIKit
 
@@ -40,8 +35,8 @@ final class PostTableViewCell: UITableViewCell {
         return stackView
     }()
     
-    private lazy var authorLabel: UILabel = {
-        let label = UILabel()
+    private lazy var authorLabel: MarginLabel = {
+        let label = MarginLabel()
         label.backgroundColor = .clear
         label.numberOfLines = 2
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
@@ -60,8 +55,8 @@ final class PostTableViewCell: UITableViewCell {
         return image
     }()
 
-    private lazy var descriptionLabel: UILabel = {
-        let label = UILabel()
+    private lazy var descriptionLabel: MarginLabel = {
+        let label = MarginLabel()
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .systemGray
@@ -80,8 +75,8 @@ final class PostTableViewCell: UITableViewCell {
         return stack
     }()
     
-    private lazy var likes: UILabel = {
-        let likes = UILabel()
+    private lazy var likes: MarginLabel = {
+        let likes = MarginLabel()
         likes.text = "Likes: "
         likes.backgroundColor = .clear
         likes.font = UIFont.systemFont(ofSize: 16)
@@ -92,9 +87,10 @@ final class PostTableViewCell: UITableViewCell {
         return likes
     }()
     
-    private lazy var views: UILabel = {
-        let views = UILabel()
+    private lazy var views: MarginLabel = {
+        let views = MarginLabel()
         views.text = "Views: "
+        views.textAlignment = .right
         views.backgroundColor = .clear
         views.font = UIFont.systemFont(ofSize: 16)
         views.textColor = .black
@@ -134,6 +130,8 @@ final class PostTableViewCell: UITableViewCell {
         stackView.addArrangedSubview(stackLikesViews)
         stackLikesViews.addArrangedSubview(likes)
         stackLikesViews.addArrangedSubview(views)
+    
+        stackView.isLayoutMarginsRelativeArrangement = true
         
         let backViewConstraints = self.backViewConstraints()
         let stackViewConstraints = self.stackViewConstraints()
@@ -144,7 +142,9 @@ final class PostTableViewCell: UITableViewCell {
         //let dateTitleConstraints = self.dateTitleConstraints()
         let imageConstraints = imageConstraints()
 
-        NSLayoutConstraint.activate(backViewConstraints + stackViewConstraints + imageConstraints/* +  authorLabelConstraints + descriptionConstraints + stackLikesViewsConstraints + postImageConstraints + dateTitleConstraints*/)
+        let labelConstraints = [likes.widthAnchor.constraint(equalToConstant: 130), views.widthAnchor.constraint(equalToConstant: 130)]
+        
+        NSLayoutConstraint.activate(backViewConstraints + stackViewConstraints + imageConstraints + labelConstraints/* +  authorLabelConstraints + descriptionConstraints + stackLikesViewsConstraints + postImageConstraints + dateTitleConstraints*/)
     }
     
     private func backViewConstraints() -> [NSLayoutConstraint] {
@@ -160,8 +160,8 @@ final class PostTableViewCell: UITableViewCell {
     
     private func stackViewConstraints() -> [NSLayoutConstraint] {
         let topConstraint = self.stackView.topAnchor.constraint(equalTo: self.backView.topAnchor, constant: 16)
-        let leadingConstraint = self.stackView.leadingAnchor.constraint(equalTo: self.backView.leadingAnchor, constant: 16)
-        let trailingConstraint = self.stackView.trailingAnchor.constraint(equalTo: self.backView.trailingAnchor, constant: -16)
+        let leadingConstraint = self.stackView.leadingAnchor.constraint(equalTo: self.backView.leadingAnchor, constant: 0)
+        let trailingConstraint = self.stackView.trailingAnchor.constraint(equalTo: self.backView.trailingAnchor, constant: 0)
         let bottomConstraint = self.stackView.bottomAnchor.constraint(equalTo: self.backView.bottomAnchor, constant: -16)
 
         return [
@@ -188,6 +188,9 @@ final class PostTableViewCell: UITableViewCell {
     
     private func imageConstraints() -> [NSLayoutConstraint] {
         let height = postImage.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1.0)
+        postImage.layoutMargins = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 0)
+        
+        //let leading = postImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -16)
 //        let centerX = postImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
 //        let width = postImage.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1.0)
         return [ height ]
