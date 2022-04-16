@@ -62,7 +62,7 @@ class ProfileHeaderView: UIView {
         return textField
     }()
     
-    private lazy var avatar: UIImageView = {
+    lazy var avatar: UIImageView = {
         let avatar = UIImageView(image: UIImage(named: "Nota"))
         avatar.layer.cornerRadius = 50
         avatar.layer.masksToBounds = true // commented
