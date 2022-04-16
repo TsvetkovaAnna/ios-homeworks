@@ -13,7 +13,7 @@ protocol ProfileHeaderViewDelegate: AnyObject {
 
 class ProfileViewController: UIViewController {
     
-    var tableHeaderViewHeight: CGFloat = 220
+    var tableHeaderViewHeight: CGFloat = 230
 //   // lazy var profileHeaderView: = ProfileHeaderView()
 //
     //var heightHeaderConstraint: NSLayoutConstraint?
@@ -25,6 +25,9 @@ class ProfileViewController: UIViewController {
 //        return downButton
 //    }()
 //
+    
+    private let defaultCellIdentifier = "DefaultCell"
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         //tableView.style = .grouped
@@ -32,9 +35,11 @@ class ProfileViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "DefaultCell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: defaultCellIdentifier)
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: "PostCell")
-        //tableView.estimatedRowHeight = 44
+        tableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: PhotosTableViewCell.identifier)
+        tableView.allowsSelection = true
+        //tableView.estimatedRowHeight = 55
         return tableView
     }()
     
@@ -68,10 +73,6 @@ class ProfileViewController: UIViewController {
         super.viewWillLayoutSubviews()
         //updateProfileHeaderView(for: tableView.tableHeaderView)
     }
-    
-//    override func viewDidDisappear(_ animated: Bool) {
-//
-//    }
     
     private func setupNavigationBar() {
         self.navigationController?.navigationBar.prefersLargeTitles = false
@@ -166,6 +167,14 @@ class ProfileViewController: UIViewController {
 
 extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        indexPath.section == 0 ? 70 : 200
+//    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        2
+    }
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         section == 0 ? tableHeaderViewHeight : 0
     }
@@ -175,34 +184,75 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.dataSource.count
+        section == 0 ? 1 : self.dataSource.count
+        //return self.dataSource.count
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        print("TV TAp")
+        
+        if indexPath.row == 0 {
+            let photoVC = PhotosViewController()
+            navigationController?.pushViewController(photoVC, animated: true)
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch indexPath.section {
+        case 0:
+            return returnPhotoCell(tableView, indexPath)
+        case 1:
+            return returnPostCell(tableView, indexPath)
+        default:
+            return returnDefaultCell(tableView, indexPath)
+        }
+    }
+    
+    private func returnPostCell(_ tableView: UITableView, _ indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as? PostTableViewCell else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DefaultCell", for: indexPath)
-            return cell
+            return returnDefaultCell(tableView, indexPath)
         }
         let post = dataSource[indexPath.row]
         let viewModel = PostTableViewCell.ViewModel(author: post.author, image: post.image, description: post.description,/* publishedAt: post.publishedAtString, */ likes: post.likes, views: post.views)
         cell.setup(with: viewModel)
         return cell
     }
+    
+    private func returnPhotoCell(_ tableView: UITableView, _ indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: PhotosTableViewCell.identifier, for: indexPath) as? PhotosTableViewCell else {
+            return returnDefaultCell(tableView, indexPath)
+        }
+        cell.delegate = self
+        return cell
+    }
+    
+    private func returnDefaultCell(_ tableView: UITableView, _ indexPath: IndexPath) -> UITableViewCell {
+        tableView.dequeueReusableCell(withIdentifier: defaultCellIdentifier, for: indexPath)
+    }
 }
 
 extension ProfileViewController: ProfileHeaderViewDelegate {
     func statusButtonPressed(isTextFieldVisible: Bool, completion: @escaping () -> Void) {
         //heightHeaderConstraint?.constant = isTextFieldVisible ? 220 : 174
-        tableHeaderViewHeight = isTextFieldVisible ? 220 : 185 //174
-        tableView.beginUpdates()
-        tableView.reloadSections(IndexSet(0..<1), with: .automatic)
-        tableView.endUpdates()
+        tableHeaderViewHeight = isTextFieldVisible ? 230 : 190 //174
+//        tableView.beginUpdates()
+        //tableView.reloadSections(IndexSet(0..<1), with: .automatic)
+//        tableView.endUpdates()
         UIView.animate(withDuration: 0.3) {
+            self.tableView.beginUpdates()
             self.view.layoutIfNeeded()
+            self.tableView.endUpdates()
         } completion: { _ in
             completion()
         }
     }
-    
-    
+}
+
+extension ProfileViewController: PhotosTableViewCellDelegate {
+    func showPhotoViewController() {
+        let photoVC = PhotosViewController()
+        navigationController?.pushViewController(photoVC, animated: true)
+    }
 }
