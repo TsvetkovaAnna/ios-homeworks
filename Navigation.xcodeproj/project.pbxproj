@@ -34,6 +34,7 @@
 		955A4DFD280DFB8300AB431D /* Navigation.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 955A4DFB280DFB8300AB431D /* Navigation.xcdatamodeld */; };
 		955A4E00280DFC5100AB431D /* PostCounter+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955A4DFE280DFC5100AB431D /* PostCounter+CoreDataClass.swift */; };
 		955A4E01280DFC5100AB431D /* PostCounter+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955A4DFF280DFC5100AB431D /* PostCounter+CoreDataProperties.swift */; };
+		955A4E06280E118600AB431D /* EmailCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955A4E05280E118600AB431D /* EmailCheck.swift */; };
 		95E3055C27EFF417008922FF /* TabBarControllerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E3055B27EFF417008922FF /* TabBarControllerBuilder.swift */; };
 		95E3055E27EFF530008922FF /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E3055D27EFF530008922FF /* RoundedButton.swift */; };
 /* End PBXBuildFile section */
@@ -71,6 +72,7 @@
 		955A4DFC280DFB8300AB431D /* Navigation.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Navigation.xcdatamodel; sourceTree = "<group>"; };
 		955A4DFE280DFC5100AB431D /* PostCounter+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PostCounter+CoreDataClass.swift"; path = "Navigation/PostCounter+CoreDataClass.swift"; sourceTree = "<group>"; };
 		955A4DFF280DFC5100AB431D /* PostCounter+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PostCounter+CoreDataProperties.swift"; path = "Navigation/PostCounter+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		955A4E05280E118600AB431D /* EmailCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailCheck.swift; sourceTree = "<group>"; };
 		95E3055B27EFF417008922FF /* TabBarControllerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarControllerBuilder.swift; sourceTree = "<group>"; };
 		95E3055D27EFF530008922FF /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -140,11 +142,9 @@
 				9535727727D7B829003465F4 /* AppDelegate.swift */,
 				9535727927D7B829003465F4 /* SceneDelegate.swift */,
 				95E3055B27EFF417008922FF /* TabBarControllerBuilder.swift */,
+				955A4E05280E118600AB431D /* EmailCheck.swift */,
 				954EEEDB2805048900657573 /* CustomElements */,
-				84E6741227E38F3000F050EF /* Task2_3.md */,
-				954F06BF27E0D94F009A8257 /* Task1_2.md */,
-				950C6BBA27FD2C880011B091 /* HW2_5_Scroll.md */,
-				955A4DF4280DF1B300AB431D /* Diplom.md */,
+				955A4E02280E01C600AB431D /* Tasks */,
 				955A4DBA280B15AE00AB431D /* AvatarGestureViewController.swift */,
 				84E6741327E38FF900F050EF /* FeedTab */,
 				84E6741427E3903700F050EF /* Profile */,
@@ -164,6 +164,17 @@
 				950C6BBC27FD2C920011B091 /* IndentTextField.swift */,
 			);
 			path = CustomElements;
+			sourceTree = "<group>";
+		};
+		955A4E02280E01C600AB431D /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				84E6741227E38F3000F050EF /* Task2_3.md */,
+				954F06BF27E0D94F009A8257 /* Task1_2.md */,
+				950C6BBA27FD2C880011B091 /* HW2_5_Scroll.md */,
+				955A4DF4280DF1B300AB431D /* Diplom.md */,
+			);
+			path = Tasks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,6 +268,7 @@
 				954EEED42804FC6C00657573 /* MarginLabel.swift in Sources */,
 				955A4DF8280DF9C700AB431D /* ViewModel.swift in Sources */,
 				955A4DF6280DF93300AB431D /* ShowPostViewController.swift in Sources */,
+				955A4E06280E118600AB431D /* EmailCheck.swift in Sources */,
 				954F06C927E117F8009A8257 /* Post.swift in Sources */,
 				95E3055C27EFF417008922FF /* TabBarControllerBuilder.swift in Sources */,
 				955A4DBB280B15AE00AB431D /* AvatarGestureViewController.swift in Sources */,

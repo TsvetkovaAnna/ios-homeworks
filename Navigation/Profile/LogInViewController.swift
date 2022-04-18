@@ -17,7 +17,7 @@ final class LogInViewController: UIViewController {
     
     private var isAlertAnimationBlocked = false
     
-    private let trueLogin = "n"
+    private let trueLogin = "note@this.dog"
     
     private let truePassword = "222222"
     
@@ -289,7 +289,7 @@ final class LogInViewController: UIViewController {
         if password.count < 6 && password.count > 0 {
             alertAnimation()
         } else if password.count > 5 {
-            if login == trueLogin && password == truePassword { //Nota 222222
+            if trueLogin.isEmail() && login == trueLogin && password == truePassword { //Nota 222222
             navigationController?.pushViewController(ProfileViewController(), animated: true)
             } else if login.count > 0 {
                 let alertController = UIAlertController(title: "Login Failed", message: "Wrong Name or Password", preferredStyle: .alert)
