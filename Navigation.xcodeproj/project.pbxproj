@@ -58,6 +58,7 @@
 		954F06C827E117F7009A8257 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		954F06CA27E11FA8009A8257 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		955A4DBA280B15AE00AB431D /* AvatarGestureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarGestureViewController.swift; sourceTree = "<group>"; };
+		955A4DF4280DF1B300AB431D /* Diplom.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Diplom.md; sourceTree = "<group>"; };
 		95E3055B27EFF417008922FF /* TabBarControllerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarControllerBuilder.swift; sourceTree = "<group>"; };
 		95E3055D27EFF530008922FF /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -126,6 +127,7 @@
 				84E6741227E38F3000F050EF /* Task2_3.md */,
 				954F06BF27E0D94F009A8257 /* Task1_2.md */,
 				950C6BBA27FD2C880011B091 /* HW2_5_Scroll.md */,
+				955A4DF4280DF1B300AB431D /* Diplom.md */,
 				955A4DBA280B15AE00AB431D /* AvatarGestureViewController.swift */,
 				84E6741327E38FF900F050EF /* FeedTab */,
 				84E6741427E3903700F050EF /* Profile */,

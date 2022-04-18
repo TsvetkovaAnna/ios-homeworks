@@ -1,9 +1,4 @@
-//
-//  PhotosTableViewCell.swift
-//  Navigation
-//
-//  Created by Anna Tsvetkova on 12.04.2022.
-//
+
 
 import UIKit
 
@@ -186,6 +181,7 @@ extension PhotosTableViewCell: UICollectionViewDelegateFlowLayout, UICollectionV
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotosCollectionViewCell.identifier, for: indexPath) as? PhotosCollectionViewCell else {
             return returnDefaultCell(collectionView, indexPath)
         }
+        //let photoss = photos.addPhotos()
         cell.photoView.image = photos[indexPath.item]
         //cell.image = UIImage(named: photos[indexPath.row])
         return cell
