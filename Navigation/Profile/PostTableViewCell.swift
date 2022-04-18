@@ -8,13 +8,21 @@ protocol Setupable {
     func setup(with viewModel: ViewModelProtocol)
 }
 
+protocol PostTableViewCellDelegate: AnyObject {
+    func openFullPost(viewModel: ViewModelProtocol)
+}
+
 final class PostTableViewCell: UITableViewCell {
     
-    struct ViewModel: ViewModelProtocol {
-        let author, image, description: String
-        var likes, views: Int
-    }
+    weak var delegate: PostTableViewCellDelegate?
     
+    var viewModel: ViewModel?
+    
+    var isPhotoInteractionEnabled = false {
+        didSet {
+            postImage.isUserInteractionEnabled = isPhotoInteractionEnabled
+        }
+    }
     private lazy var backView: UIView = {
         let view = UIView()
         view.clipsToBounds = true
@@ -48,6 +56,8 @@ final class PostTableViewCell: UITableViewCell {
     
     private lazy var postImage: UIImageView = {
         let image = UIImageView()
+        image.isUserInteractionEnabled = false
+        image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openPost)))
         image.contentMode = .scaleAspectFit
         //image.setContentCompressionResistancePriority(UILayoutPriority(250), for: .vertical)
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -77,10 +87,12 @@ final class PostTableViewCell: UITableViewCell {
     
     private lazy var likes: MarginLabel = {
         let likes = MarginLabel()
-        likes.text = "Likes: "
+        //likes.text = "Likes: "
         likes.backgroundColor = .clear
         likes.font = UIFont.systemFont(ofSize: 16)
         likes.textColor = .black
+        likes.isUserInteractionEnabled = true
+        likes.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(putLike)))
         likes.preferredMaxLayoutWidth = self.frame.size.width
         likes.setContentCompressionResistancePriority(UILayoutPriority(1000), for: .vertical)
         //likes.translatesAutoresizingMaskIntoConstraints = false
@@ -89,7 +101,7 @@ final class PostTableViewCell: UITableViewCell {
     
     private lazy var views: MarginLabel = {
         let views = MarginLabel()
-        views.text = "Views: "
+        //views.text = "Views: "
         views.textAlignment = .right
         views.backgroundColor = .clear
         views.font = UIFont.systemFont(ofSize: 16)
@@ -188,7 +200,7 @@ final class PostTableViewCell: UITableViewCell {
     
     private func imageConstraints() -> [NSLayoutConstraint] {
         let height = postImage.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1.0)
-        postImage.layoutMargins = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 0)
+        //postImage.layoutMargins = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 0)
         
         //let leading = postImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -16)
 //        let centerX = postImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
@@ -208,19 +220,45 @@ final class PostTableViewCell: UITableViewCell {
         return [leadingConstraint, trailingConstraint]
     }
     
+    @objc private func openPost() {
+        print(#function)
+        guard let viewModel = viewModel else { return }
+        CoreDataManager().addViewsToPost(post: viewModel)
+        delegate?.openFullPost(viewModel: viewModel)
+        setViewsText(CoreDataManager().showViewsInPost(post: viewModel) ?? viewModel.views)
+    }
+    
+    @objc private func putLike() {
+        guard let viewModel = viewModel else { return }
+        CoreDataManager().addLikeToPost(post: viewModel)
+        setLikesText(CoreDataManager().showLikesInPost(post: viewModel) ?? viewModel.likes)
+    }
 }
+
 
 extension PostTableViewCell: Setupable {
     
     func setup(with viewModel: ViewModelProtocol) {
-        guard let viewModel = viewModel as? ViewModel else { return }
-        
+        guard var viewModel = viewModel as? ViewModel else { return }
+        self.viewModel = viewModel
+        viewModel.likes = CoreDataManager().showLikesInPost(post: viewModel) ?? viewModel.likes
+        viewModel.views = CoreDataManager().showViewsInPost(post: viewModel) ?? viewModel.views
         authorLabel.text = viewModel.author
         postImage.image = UIImage(named: viewModel.image)
         descriptionLabel.text = viewModel.description
         //        dateTitle.text = viewModel.publishedAt
-        likes.text? += String(viewModel.likes)
-        views.text? += String(viewModel.views)
+//        likes.text? += String(viewModel.likes)
+//        views.text? += String(viewModel.views)
+        setLikesText(viewModel.likes)
+        setViewsText(viewModel.views)
         
+    }
+    
+    func setLikesText(_ number: Int) {
+        likes.text = "Likes: " + String(number)
+    }
+    
+    func setViewsText(_ number: Int) {
+        views.text = "Views: " + String(number)
     }
 }

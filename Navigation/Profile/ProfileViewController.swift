@@ -14,17 +14,6 @@ protocol ProfileHeaderViewDelegate: AnyObject {
 class ProfileViewController: UIViewController {
     
     var tableHeaderViewHeight: CGFloat = 230
-//   // lazy var profileHeaderView: = ProfileHeaderView()
-//
-    //var heightHeaderConstraint: NSLayoutConstraint?
-//    private lazy var downButton: UIButton = {
-//        let downButton = UIButton()
-//        downButton.backgroundColor = .systemCyan
-//        downButton.setTitle("Just Button", for: .normal)
-//        downButton.translatesAutoresizingMaskIntoConstraints = false
-//        return downButton
-//    }()
-//
     
     private let defaultCellIdentifier = "DefaultCell"
     
@@ -67,6 +56,15 @@ class ProfileViewController: UIViewController {
         setupView()
         tapGesture()
         setupProfileHeaderView()
+        
+        
+    }
+    
+    override func becomeFirstResponder() -> Bool {
+        super.becomeFirstResponder()
+        print(#function)
+        tableView.reloadData()
+        return true
     }
     
     override func viewWillLayoutSubviews() {
@@ -123,6 +121,14 @@ class ProfileViewController: UIViewController {
 //                let jsonObj = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
                 let news = try self.jsonDecoder.decode(News.self, from: data)
                 print("json data: \(news)")
+                
+                if !CoreDataManager().isPostsExist {
+                    
+                    for article in news.articles {
+                        CoreDataManager().createNewPost(post: article)
+                    }
+                }
+                
                 completion(news.articles)
             } catch let error {
                 print("parse error: \(error.localizedDescription)")
@@ -131,38 +137,6 @@ class ProfileViewController: UIViewController {
             fatalError("Invalid filename/path.")
         }
     }
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        view.backgroundColor = .lightGray
-//        navigationController?.navigationBar.isHidden = false
-//        title = "Profile"
-//        setupHeaderView()
-//        setupDownButton()
-//    }
-//
-//    private func setupDownButton() {
-//        view.addSubview(downButton)
-//        let downButtonBottom = downButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-//        let downButtonLeading = downButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
-//        let downButtonTrailing = downButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
-//        let downButtonHeight = downButton.heightAnchor.constraint(equalToConstant: 50)
-//        NSLayoutConstraint.activate([downButtonBottom, downButtonHeight, downButtonLeading, downButtonTrailing])
-//    }
-//
-//    private func setupHeaderView() {
-//        view.addSubview(profileHeaderView)
-//        let leadingConstraint = profileHeaderView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
-//        let trailingConstraint = profileHeaderView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
-//        let topConstraint = profileHeaderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-//        heightHeaderConstraint = profileHeaderView.heightAnchor.constraint(equalToConstant: 220)
-//
-//        NSLayoutConstraint.activate([leadingConstraint, trailingConstraint, topConstraint, heightHeaderConstraint].compactMap({ $0 }))
-//    }
-////    override func viewWillLayoutSubviews() {
-////        profileHeaderView.frame = view.bounds
-////    }
-
 }
 
 extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
@@ -214,8 +188,10 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as? PostTableViewCell else {
             return returnDefaultCell(tableView, indexPath)
         }
+        cell.delegate = self
+        cell.isPhotoInteractionEnabled = true
         let post = dataSource[indexPath.row]
-        let viewModel = PostTableViewCell.ViewModel(author: post.author, image: post.image, description: post.description,/* publishedAt: post.publishedAtString, */ likes: post.likes, views: post.views)
+        let viewModel = ViewModel(author: post.author, image: post.image, description: post.description,/* publishedAt: post.publishedAtString, */ likes: post.likes, views: post.views)
         cell.setup(with: viewModel)
         return cell
     }
@@ -231,6 +207,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     private func returnDefaultCell(_ tableView: UITableView, _ indexPath: IndexPath) -> UITableViewCell {
         tableView.dequeueReusableCell(withIdentifier: defaultCellIdentifier, for: indexPath)
     }
+    
 }
 
 extension ProfileViewController: ProfileHeaderViewDelegate {
@@ -255,4 +232,21 @@ extension ProfileViewController: PhotosTableViewCellDelegate {
         let photoVC = PhotosViewController()
         navigationController?.pushViewController(photoVC, animated: true)
     }
+}
+
+extension ProfileViewController: PostTableViewCellDelegate {
+    
+    func openFullPost(viewModel: ViewModelProtocol) {
+        let showController = ShowPostViewController(viewModel: viewModel)
+        showController.delegate = self
+        present(showController, animated: true)
+    }
+}
+
+extension ProfileViewController: ShowPostViewControllerDelegate {
+    func reloadTableView() {
+        tableView.reloadData()
+    }
+    
+   
 }
