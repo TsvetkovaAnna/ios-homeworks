@@ -5,7 +5,7 @@ class InfoViewController: UIViewController {
     lazy var alertButton: UIButton = {
         let alertButton = RoundedButton(cornerRadius: UIScreen.main.bounds.width * 0.05)
         alertButton.addTarget(self, action: #selector(showAlert), for: .touchUpInside)
-        alertButton.backgroundColor = .systemCyan
+        alertButton.backgroundColor = UIColor(named: "AccentColor")
         alertButton.tintColor = .orange
         alertButton.setTitle("Show Alert", for: .normal)
         return alertButton

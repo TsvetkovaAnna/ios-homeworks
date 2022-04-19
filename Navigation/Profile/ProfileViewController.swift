@@ -56,8 +56,6 @@ class ProfileViewController: UIViewController {
         setupView()
         tapGesture()
         setupProfileHeaderView()
-        
-        
     }
     
     override func becomeFirstResponder() -> Bool {
@@ -208,12 +206,24 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.dequeueReusableCell(withIdentifier: defaultCellIdentifier, for: indexPath)
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete/*UITableViewCell.EditingStyle.delete*/ {
+           // self.tableView.beginUpdates()
+            self.dataSource.remove(at: indexPath.row)
+            //self.tableView.deleteRows(at: [indexPath], with: .fade)
+            self.tableView.reloadData()
+            //self.tableView.endUpdates()
+        }
+    }
 }
 
 extension ProfileViewController: ProfileHeaderViewDelegate {
     func statusButtonPressed(isTextFieldVisible: Bool, completion: @escaping () -> Void) {
-        //heightHeaderConstraint?.constant = isTextFieldVisible ? 220 : 174
-        tableHeaderViewHeight = isTextFieldVisible ? 230 : 190 //174
+        tableHeaderViewHeight = isTextFieldVisible ? 230 : 190
 //        tableView.beginUpdates()
         //tableView.reloadSections(IndexSet(0..<1), with: .automatic)
 //        tableView.endUpdates()
