@@ -1,9 +1,4 @@
-//
-//  TabBarControllerBuilder.swift
-//  Navigation
-//
-//  Created by Anna Tsvetkova on 22.03.2022.
-//
+
 
 import UIKit
 

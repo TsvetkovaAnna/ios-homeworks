@@ -15,7 +15,7 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     
     var image: UIImage?
     
-    var indexCell: IndexPath?  //--------------????
+    var indexCell: IndexPath?
     
     var isPhotoInteractionEnabled = false {
         didSet {
@@ -25,13 +25,11 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     
     lazy var photoView: UIImageView = {
         let photoView = UIImageView()
-        //photoView.image = UIImage(named: "dog1")
         photoView.layer.cornerRadius = 6
         photoView.clipsToBounds = true
         photoView.backgroundColor = .white
         photoView.contentMode = .scaleAspectFill
         photoView.translatesAutoresizingMaskIntoConstraints = false
-        //photoView.isUserInteractionEnabled = true
         photoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(photoViewTapped)))
         return photoView
     }()
@@ -63,7 +61,6 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     
     @objc func photoViewTapped() {
         print(#function)
-       // guard let indexCell = indexCell else { return }
         delegate?.openPhotoFullScreen(photoView.image)
     }
 }

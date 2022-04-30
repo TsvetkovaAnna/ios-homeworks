@@ -1,9 +1,4 @@
-//
-//  LogInViewController.swift
-//  Navigation
-//
-//  Created by Anna Tsvetkova on 26.03.2022.
-//
+
 
 import UIKit
 
@@ -27,7 +22,6 @@ final class LogInViewController: UIViewController {
         label.backgroundColor = .white
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .red
-        //label.isHidden = true
         label.alpha = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -65,7 +59,6 @@ final class LogInViewController: UIViewController {
     
     private lazy var contentView: UIView = {
         let contentView = UIView()
-        //customView.backgroundColor = .red
         contentView.translatesAutoresizingMaskIntoConstraints = false
         return contentView
     }()
@@ -89,10 +82,7 @@ final class LogInViewController: UIViewController {
         login.font = UIFont.systemFont(ofSize: 16)
         login.tintColor = accentColor
         login.autocapitalizationType = .none
-//        login.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: login.frame.height))
-//        login.leftViewMode = .always
         login.placeholder = "Email or phone"
-        //let isValid = "somemail".range(of: #""#, options: .regularExpression) != nil
         login.translatesAutoresizingMaskIntoConstraints = false
         return login
     }()
@@ -104,8 +94,6 @@ final class LogInViewController: UIViewController {
         password.font = UIFont.systemFont(ofSize: 16)
         password.tintColor = accentColor
         password.autocapitalizationType = .none
-//        password.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: password.frame.height))
-//        password.leftViewMode = .always
         password.isSecureTextEntry = true
         password.placeholder = "Password"
         password.translatesAutoresizingMaskIntoConstraints = false
@@ -114,7 +102,6 @@ final class LogInViewController: UIViewController {
     
     lazy var stackView: UIStackView = {
         let stackView = UIStackView()
-       // stackView.axis = .vertical
         stackView.layer.cornerRadius = 10
         stackView.layer.borderWidth = 0.5
         stackView.clipsToBounds = true
@@ -130,7 +117,7 @@ final class LogInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.isHidden = true //не скрылся навигейшн!!
+        self.navigationController?.navigationBar.isHidden = true
         self.view.backgroundColor = .white
         drawSelf()
     }
@@ -140,16 +127,14 @@ final class LogInViewController: UIViewController {
         
         view.addGestureRecognizer(tapRecognizer)
         
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        
         super.viewDidDisappear(animated)
-//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         view.removeGestureRecognizer(tapRecognizer)
@@ -163,8 +148,6 @@ final class LogInViewController: UIViewController {
         
         let offsetY = keyboardFrameValue.cgRectValue.height
         scrollView.setContentOffset(CGPoint(x: 0, y: offsetY), animated: true)
-        
-        //scrollView.frame -
     }
     
     @objc func keyboardWillHide() {
@@ -197,7 +180,6 @@ final class LogInViewController: UIViewController {
     
     @objc private func keyboardDidHide(_ notification: Notification) {
         print(#function)
-        //view.endEditing(true)
         scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
@@ -212,7 +194,6 @@ final class LogInViewController: UIViewController {
         
         scrollView.addSubview(contentView)
         let customViewTop = contentView.topAnchor.constraint(equalTo: scrollView.topAnchor)
-        //let customViewHeight = contentView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)//522.5)
         let customViewHeight = contentView.heightAnchor.constraint(equalToConstant: 700)
         let customViewWidth = contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         let customViewX = contentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor)
@@ -230,7 +211,6 @@ final class LogInViewController: UIViewController {
         let logoXConstraint = logoVK.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         
         contentView.addSubview(stackView)
-        //contentView.bringSubviewToFront(stackView)
         stackView.addArrangedSubview(loginField)
         stackView.addArrangedSubview(separator)
         stackView.addArrangedSubview(passwordField)
@@ -245,12 +225,9 @@ final class LogInViewController: UIViewController {
         contentView.addSubview(alertPasswordLabel)
         let alertTop = alertPasswordLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16)
         let alertX = alertPasswordLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
-//        let alertTrailing = alertPasswordLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
-//        let alertBottom = alertPasswordLabel.bottomAnchor.constraint(equalTo: stackView.topAnchor, constant: 16)
+
         NSLayoutConstraint.activate([scrollViewTop, scrollViewBottom, scrollViewLeading, scrollViewTrailing, stackLeadingConstraint, stackCenterXConstraint, stackTopConstraint, stackHeightConstraint, loginHeightConstraint, passwordHeightConstraint, logoXConstraint, logoTopConstraint, logoWidthConstraint, logoHeightConstraint, separatorHeight, loginButtonTopConstraint, buttonHeight, buttonLeading, buttonCenterX, customViewTop, customViewWidth, customViewHeight, customViewX, alertTop, alertX].compactMap({ $0 }))
-        //stackView.endEditing(true)
-        //login.resignFirstResponder()
-        //password.resignFirstResponder()
+    
     }
     
     @objc private func makeLogin() {
@@ -263,33 +240,25 @@ final class LogInViewController: UIViewController {
         if login == "" {
             self.loginField.backgroundColor = .purple
             self.loginField.backgroundColor = self.loginField.backgroundColor?.withAlphaComponent(0.5)
-//            UIView.animate(withDuration: 0.3) {
-//                self.view.layoutIfNeeded()
-//            } completion: { _ in
                 UIView.animate(withDuration: 0.3, delay: 1) {
                     self.loginField.backgroundColor = .clear
                     self.view.layoutIfNeeded()
-               // }
             }
         }
 
         if password == "" {
             self.passwordField.backgroundColor = .purple
             self.passwordField.backgroundColor = self.passwordField.backgroundColor?.withAlphaComponent(0.5)
-//            UIView.animate(withDuration: 0.3 ) {
-//                self.view.layoutIfNeeded()
-//            } completion: { _ in
                 UIView.animate(withDuration: 0.3, delay: 1) {
                     self.passwordField.backgroundColor = .clear
                     self.view.layoutIfNeeded()
-                //}
             }
         }
         
         if password.count < 6 && password.count > 0 {
             alertAnimation()
         } else if password.count > 5 {
-            if trueLogin.isEmail() && login == trueLogin && password == truePassword { //Nota 222222
+            if trueLogin.isEmail() && login == trueLogin && password == truePassword {
             navigationController?.pushViewController(ProfileViewController(), animated: true)
             } else if login.count > 0 {
                 let alertController = UIAlertController(title: "Login Failed", message: "Wrong Name or Password", preferredStyle: .alert)
@@ -327,39 +296,5 @@ final class LogInViewController: UIViewController {
             }
         }
     }
-        
-    func alertAnimation2() { //не используется
-        isAlertAnimationBlocked = true
-        UIView.animate(withDuration: 1.3, delay: 0) {
-            print("animate")
-            self.passwordField.backgroundColor = .purple
-            self.passwordField.backgroundColor = self.passwordField.backgroundColor?.withAlphaComponent(0.5)
-            self.loginButtonTopConstraint?.constant += 70
-            self.view.layoutIfNeeded()
-        } completion: { _ in
-            UIView.animate(withDuration: 1.3, delay: 0) {
-                self.alertPasswordLabel.alpha = 1
-            } completion: { _ in
-                UIView.animate(withDuration: 1.3, delay: 5) {
-                    print("revert")
-                    self.alertPasswordLabel.alpha = 0
-                } completion: { _ in
-                    UIView.animate(withDuration: 1.3, delay: 0) {
-                        self.passwordField.backgroundColor = .clear
-                        self.loginButtonTopConstraint?.constant -= 70
-                        self.view.layoutIfNeeded()
-                    } completion: { _ in
-                        self.isAlertAnimationBlocked = false
-                    }
-                }
-            }
-        }
-    }
-
-//    @objc private func makeLogin() {
-//        let profileViewController = ProfileViewController()
-//        navigationController?.pushViewController(profileViewController, animated: true)
-//    }
-
 
 }

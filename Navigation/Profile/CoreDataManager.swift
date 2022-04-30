@@ -1,11 +1,4 @@
-//
-//  CoreDataManager.swift
-//  Navigation
-//
-//  Created by Anna Tsvetkova on 17.04.2022.
-//
 
-//import Foundation
 import UIKit
 import CoreData
 

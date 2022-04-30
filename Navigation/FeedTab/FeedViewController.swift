@@ -1,9 +1,4 @@
-//
-//  FeedViewController.swift
-//  Navigation
-//
-//  Created by Anna Tsvetkova on 15.03.2022.
-//
+
 
 import UIKit
 
@@ -39,8 +34,6 @@ class FeedViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //makeButtonConstraints()
-        //view.backgroundColor = .brown
         setPhotoView()
         setStackView()
     }
@@ -61,10 +54,8 @@ class FeedViewController: UIViewController {
         stackView.addArrangedSubview(secondButton)
         photoBackView.addSubview(stackView)
         view.bringSubviewToFront(stackView)
-        //view.addSubview(stackView)
         stackView.backgroundColor = .clear
         let stackLeadingConstraint = stackView.leadingAnchor.constraint(equalTo: photoBackView.leadingAnchor)
-//        let stackTrailingConstraint = stackView.trailingAnchor.constraint(equalTo: photoBackView.leadingAnchor)
         let stackCenterXConstraint = stackView.centerXAnchor.constraint(equalTo: photoBackView.centerXAnchor)
         let stackCenterYConstraint = stackView.centerYAnchor.constraint(equalTo: photoBackView.centerYAnchor)
         let firstButtonHeightConstraint = firstButton.heightAnchor.constraint(equalToConstant: 50)
@@ -72,21 +63,10 @@ class FeedViewController: UIViewController {
         NSLayoutConstraint.activate([stackLeadingConstraint, stackCenterXConstraint, stackCenterYConstraint, firstButtonHeightConstraint, secondButtonHeightConstraint])
     }
     
-//    private func makeButtonConstraints() {
-//        view.addSubview(openPostButton)
-//        let leadingConstraint = openPostButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
-//        let trailingConstraint = openPostButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
-//        let topConstraint = openPostButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-//        let heightConstraint = openPostButton.heightAnchor.constraint(equalToConstant: 50)
-//
-//        NSLayoutConstraint.activate([leadingConstraint, trailingConstraint, topConstraint, heightConstraint])
-//    }
-    
     @objc private func openPost() {
         let postViewController = PostViewController()
         postViewController.post = Post(title: "smth")
         navigationController?.pushViewController(postViewController, animated: true)
-        //present(postViewController, animated: true)
     }
     
     @objc private func openPostInStack(sender: UIButton) {
@@ -94,7 +74,6 @@ class FeedViewController: UIViewController {
         let posts: [Post] = [Post(title: "first post"), Post(title: "Second Post")]
         postViewController.post = posts[sender.tag]
         navigationController?.pushViewController(postViewController, animated: true)
-        //present(postViewController, animated: true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

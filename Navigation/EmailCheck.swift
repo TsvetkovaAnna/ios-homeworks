@@ -1,9 +1,4 @@
-//
-//  EmailCheck.swift
-//  Navigation
-//
-//  Created by Anna Tsvetkova on 19.04.2022.
-//
+
 
 import Foundation
 import UIKit

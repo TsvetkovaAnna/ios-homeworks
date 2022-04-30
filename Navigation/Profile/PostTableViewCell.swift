@@ -30,7 +30,7 @@ final class PostTableViewCell: UITableViewCell {
         view.layer.maskedCorners = [
             .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner
         ]
-        view.backgroundColor = .white//UIColor(named: "AccentColor") //UIColor(hexString: "4885CC")
+        view.backgroundColor = .white
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -59,9 +59,8 @@ final class PostTableViewCell: UITableViewCell {
         image.isUserInteractionEnabled = false
         image.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openPost)))
         image.contentMode = .scaleAspectFit
-        //image.setContentCompressionResistancePriority(UILayoutPriority(250), for: .vertical)
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.backgroundColor = .black//UIColor(named: "AccentColor")
+        image.backgroundColor = .black
         return image
     }()
 
@@ -87,7 +86,6 @@ final class PostTableViewCell: UITableViewCell {
     
     private lazy var likes: MarginLabel = {
         let likes = MarginLabel()
-        //likes.text = "Likes: "
         likes.backgroundColor = .clear
         likes.font = UIFont.systemFont(ofSize: 16)
         likes.textColor = .black
@@ -95,20 +93,17 @@ final class PostTableViewCell: UITableViewCell {
         likes.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(putLike)))
         likes.preferredMaxLayoutWidth = self.frame.size.width
         likes.setContentCompressionResistancePriority(UILayoutPriority(1000), for: .vertical)
-        //likes.translatesAutoresizingMaskIntoConstraints = false
         return likes
     }()
     
     private lazy var views: MarginLabel = {
         let views = MarginLabel()
-        //views.text = "Views: "
         views.textAlignment = .right
         views.backgroundColor = .clear
         views.font = UIFont.systemFont(ofSize: 16)
         views.textColor = .black
         views.preferredMaxLayoutWidth = self.frame.size.width
         views.setContentCompressionResistancePriority(UILayoutPriority(1000), for: .vertical)
-        //views.translatesAutoresizingMaskIntoConstraints = false
         return views
     }()
 
@@ -147,16 +142,12 @@ final class PostTableViewCell: UITableViewCell {
         
         let backViewConstraints = self.backViewConstraints()
         let stackViewConstraints = self.stackViewConstraints()
-        //let authorLabelConstraints = self.authorLabelConstraints()
-        //let postImageConstraints = self.postImageConstraints()
-        //let descriptionConstraints = self.descriptionConstraints()
-        //let stackLikesViewsConstraints = self.stackLikesViewsConstraints()
-        //let dateTitleConstraints = self.dateTitleConstraints()
+        
         let imageConstraints = imageConstraints()
 
         let labelConstraints = [likes.widthAnchor.constraint(equalToConstant: 130), views.widthAnchor.constraint(equalToConstant: 130)]
         
-        NSLayoutConstraint.activate(backViewConstraints + stackViewConstraints + imageConstraints + labelConstraints/* +  authorLabelConstraints + descriptionConstraints + stackLikesViewsConstraints + postImageConstraints + dateTitleConstraints*/)
+        NSLayoutConstraint.activate(backViewConstraints + stackViewConstraints + imageConstraints + labelConstraints)
     }
     
     private func backViewConstraints() -> [NSLayoutConstraint] {
@@ -181,30 +172,8 @@ final class PostTableViewCell: UITableViewCell {
         ]
     }
     
-    private func authorLabelConstraints() -> [NSLayoutConstraint] {
-        let leadingConstraint = authorLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 16)
-        let trailingConstraint = authorLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -16)
-        return [leadingConstraint, trailingConstraint]
-    }
-    
-    private func postImageConstraints() -> [NSLayoutConstraint] {
-        let topConstraint = postImage.topAnchor.constraint(equalTo: authorLabel.bottomAnchor, constant: 16)
-        let leadingConstraint = postImage.leadingAnchor.constraint(equalTo: stackView.leadingAnchor)
-        let trailingConstraint = postImage.trailingAnchor.constraint(equalTo: stackView.trailingAnchor)
-        let width = postImage.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 1.0)
-
-        return [
-            topConstraint, leadingConstraint, trailingConstraint, width
-        ]
-    }
-    
     private func imageConstraints() -> [NSLayoutConstraint] {
         let height = postImage.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1.0)
-        //postImage.layoutMargins = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 0)
-        
-        //let leading = postImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -16)
-//        let centerX = postImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
-//        let width = postImage.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1.0)
         return [ height ]
     }
     
@@ -246,9 +215,6 @@ extension PostTableViewCell: Setupable {
         authorLabel.text = viewModel.author
         postImage.image = UIImage(named: viewModel.image)
         descriptionLabel.text = viewModel.description
-        //        dateTitle.text = viewModel.publishedAt
-//        likes.text? += String(viewModel.likes)
-//        views.text? += String(viewModel.views)
         setLikesText(viewModel.likes)
         setViewsText(viewModel.views)
         

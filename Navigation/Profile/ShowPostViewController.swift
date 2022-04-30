@@ -1,9 +1,4 @@
-//
-//  ShowPostViewController.swift
-//  Navigation
-//
-//  Created by Anna Tsvetkova on 16.04.2022.
-//
+
 
 import UIKit
 
@@ -21,7 +16,6 @@ class ShowPostViewController: UIViewController {
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
-        //tableView.style = .grouped
         tableView.backgroundColor = .systemGray6
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
@@ -30,7 +24,6 @@ class ShowPostViewController: UIViewController {
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: "PostCell")
         tableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: PhotosTableViewCell.identifier)
         tableView.allowsSelection = true
-        //tableView.estimatedRowHeight = 55
         return tableView
     }()
     
@@ -81,8 +74,7 @@ extension ShowPostViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as? PostTableViewCell else {
             return returnDefaultCell(tableView, indexPath)
         }
-//        let post = dataSource[indexPath.row]
-//        let viewModel = ViewModel(author: post.author, image: post.image, description: post.description,/* publishedAt: post.publishedAtString, */ likes: post.likes, views: post.views)
+        
         cell.setup(with: viewModel)
         return cell
     }

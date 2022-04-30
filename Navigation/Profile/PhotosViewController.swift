@@ -1,9 +1,4 @@
-//
-//  PhotosViewController.swift
-//  Navigation
-//
-//  Created by admin on 07.04.2022.
-//
+
 
 import UIKit
 
@@ -25,7 +20,6 @@ class PhotosViewController: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.register(PhotosCollectionViewCell.self, forCellWithReuseIdentifier: PhotosCollectionViewCell.identifier)
         cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: defaultCellIdentifier)
-        //cv.isScrollEnabled = true
         cv.dataSource = self
         cv.delegate = self
         cv.backgroundColor = .systemGray6
@@ -33,10 +27,6 @@ class PhotosViewController: UIViewController {
         return cv
     }()
     
-//    private lazy var fullScreenImageView: UIImageView = {
-//        let imageView.alpha
-//    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -108,8 +98,7 @@ extension PhotosViewController: UICollectionViewDataSource, UICollectionViewDele
         cell.photoView.image = self.photos[indexPath.item]
         cell.isPhotoInteractionEnabled = true
         cell.delegate = self
-        cell.indexCell = indexPath //----------????
-        //cell.photoViewTapped()
+        cell.indexCell = indexPath
         return cell
     }
     
@@ -121,7 +110,6 @@ extension PhotosViewController: UICollectionViewDataSource, UICollectionViewDele
 extension PhotosViewController: PhotosCollectionViewCellDelegate {
     func openPhotoFullScreen(_ image: UIImage?) {
         let ava = AvatarGestureViewController(with: image)
-        //ava.modalPresentationStyle = .fullScreen
         ava.modalTransitionStyle = .flipHorizontal//.partialCurl
         present(ava, animated: true)
     }

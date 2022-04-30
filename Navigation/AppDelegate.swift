@@ -1,9 +1,4 @@
-//
-//  AppDelegate.swift
-//  Navigation
-//
-//  Created by Anna Tsvetkova on 08.03.2022.
-//
+
 
 import UIKit
 import CoreData

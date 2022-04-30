@@ -1,9 +1,4 @@
-//
-//  ProfileHeaderView.swift
-//  Navigation
-//
-//  Created by admin on 17.03.2022.
-//
+
 
 import UIKit
 
@@ -27,7 +22,6 @@ final class ProfileHeaderView: UIView {
     private lazy var myButton: UIButton = {
         let myButton = UIButton()
         myButton.layer.cornerRadius = 4
-        //myButton.layer.masksToBounds = true // commented
         myButton.backgroundColor = UIColor(named: "AccentColor")
         myButton.tintColor = .white
         myButton.setTitle("Set status", for: .normal)
@@ -66,8 +60,6 @@ final class ProfileHeaderView: UIView {
         textField.font = UIFont.systemFont(ofSize: 15)
         textField.layer.borderWidth = 1
         textField.layer.borderColor = UIColor.black.cgColor
-//        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: textField.frame.height))
-//        textField.leftViewMode = .always
         textField.placeholder = "Enter your status"
         textField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -77,7 +69,7 @@ final class ProfileHeaderView: UIView {
     private lazy var avatar: UIImageView = {
         let avatar = UIImageView(image: UIImage(named: "Nota"))
         avatar.layer.cornerRadius = 50
-        avatar.layer.masksToBounds = true // commented
+        avatar.layer.masksToBounds = true
         avatar.contentMode = .scaleAspectFill
         avatar.layer.borderWidth = 3
         avatar.layer.borderColor = UIColor.white.cgColor
