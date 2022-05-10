@@ -65,8 +65,8 @@ final class AvatarGestureViewController: UIViewController {
         view.addSubview(avatar)
         let avaCenterX = avatar.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         let avaCenterY = avatar.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        avaHeight = avatar.heightAnchor.constraint(equalToConstant: 200)
-        avaWidth = avatar.widthAnchor.constraint(equalToConstant: 200)
+        avaHeight = avatar.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, constant: -35)
+        avaWidth = avatar.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -35)
 
         view.addSubview(chest)
         view.bringSubviewToFront(chest)
@@ -77,7 +77,7 @@ final class AvatarGestureViewController: UIViewController {
         
         NSLayoutConstraint.activate([avaWidth, avaHeight, avaCenterX, avaCenterY, chestTop, chestTrailing, chestWidth, chestHeight].compactMap({ $0 }))
         
-        self.avatar.layer.cornerRadius = avaWidth!.constant/2
+        self.avatar.layer.cornerRadius = 30//avaWidth!.constant/2
     }
     
     private func setupGesture() {

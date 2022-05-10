@@ -146,7 +146,7 @@ final class ProfileHeaderView: UIView {
         self.endEditing(true)
         
         if textField.text == "" && isExpanded {
-            expandCompressStatusButton()
+            //expandCompressStatusButton()
             UIView.animate(withDuration: 2, delay: 0) {
                 self.alertStatusLabel.alpha = 1
             } completion: {_ in
@@ -158,9 +158,9 @@ final class ProfileHeaderView: UIView {
             if statusText != nil && isExpanded {
             statusLabel.text = statusText
             textField.text = ""
-        }
+            }
         
-        expandCompressStatusButton()
+            //expandCompressStatusButton()
         }
     }
 
