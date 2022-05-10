@@ -1,9 +1,4 @@
-//
-//  RoundedButton.swift
-//  Navigation
-//
-//  Created by Anna Tsvetkova on 27.03.2022.
-//
+
 
 import UIKit
 

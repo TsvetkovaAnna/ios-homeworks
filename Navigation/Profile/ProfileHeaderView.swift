@@ -1,24 +1,30 @@
-//
-//  ProfileHeaderView.swift
-//  Navigation
-//
-//  Created by admin on 17.03.2022.
-//
+
 
 import UIKit
 
-class ProfileHeaderView: UIView {
+final class ProfileHeaderView: UIView {
 
     private var buttonTopConstraint: NSLayoutConstraint?
+    
     var isExpanded = true
+    
+    private lazy var alertStatusLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Nothing new to set"
+        label.backgroundColor = .clear
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .red
+        label.alpha = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     private lazy var myButton: UIButton = {
         let myButton = UIButton()
         myButton.layer.cornerRadius = 4
-        //myButton.layer.masksToBounds = true // commented
-        myButton.backgroundColor = UIColor(named: "AccentColor")//.systemCyan
+        myButton.backgroundColor = UIColor(named: "AccentColor")
         myButton.tintColor = .white
-        myButton.setTitle("Show status", for: .normal)
+        myButton.setTitle("Set status", for: .normal)
         myButton.layer.shadowOffset = CGSize(width: 4, height: 4)
         myButton.layer.shadowColor = UIColor.black.cgColor
         myButton.layer.shadowRadius = 4
@@ -54,18 +60,16 @@ class ProfileHeaderView: UIView {
         textField.font = UIFont.systemFont(ofSize: 15)
         textField.layer.borderWidth = 1
         textField.layer.borderColor = UIColor.black.cgColor
-//        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: textField.frame.height))
-//        textField.leftViewMode = .always
         textField.placeholder = "Enter your status"
         textField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
-    lazy var avatar: UIImageView = {
+    private lazy var avatar: UIImageView = {
         let avatar = UIImageView(image: UIImage(named: "Nota"))
         avatar.layer.cornerRadius = 50
-        avatar.layer.masksToBounds = true // commented
+        avatar.layer.masksToBounds = true
         avatar.contentMode = .scaleAspectFill
         avatar.layer.borderWidth = 3
         avatar.layer.borderColor = UIColor.white.cgColor
@@ -126,24 +130,41 @@ class ProfileHeaderView: UIView {
         let textFieldTrailingConstraint = textField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         let textFieldHeightConstraint = textField.heightAnchor.constraint(equalToConstant: 40)
         
-        NSLayoutConstraint.activate([avaTopConstraint, avaLeadingConstraint, avaWidthConstraint, avaHeightConstraint, buttonTopConstraint, buttonWidthConstraint, buttonHeightConstraint, buttonLeadingConstraint, nameLabelTopConstraint, nameLabelHeightConstraint, nameLabelLeadingConstraint, nameLabelTrailingConstraint, statusTopConstraint, statusHeightConstraint, statusLeadingConstraint, statusTrailingConstraint, textFieldTopConstraint, textFieldHeightConstraint, textFieldLeadingConstraint, textFieldTrailingConstraint].compactMap({ $0 }))
+        addSubview(alertStatusLabel)
+        let alertLeading = alertStatusLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor)
+        let alertTop = alertStatusLabel.topAnchor.constraint(equalTo: statusLabel.bottomAnchor)
+        
+        NSLayoutConstraint.activate([avaTopConstraint, avaLeadingConstraint, avaWidthConstraint, avaHeightConstraint, buttonTopConstraint, buttonWidthConstraint, buttonHeightConstraint, buttonLeadingConstraint, nameLabelTopConstraint, nameLabelHeightConstraint, nameLabelLeadingConstraint, nameLabelTrailingConstraint, statusTopConstraint, statusHeightConstraint, statusLeadingConstraint, statusTrailingConstraint, textFieldTopConstraint, textFieldHeightConstraint, textFieldLeadingConstraint, textFieldTrailingConstraint, alertTop, alertLeading].compactMap({ $0 }))
     }
     
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
     @objc private func viewTapped() {
         self.endEditing(true)
     }
     
     @objc private func didTapButton() {
-//        guard let statusLabell = statusLabel, let text = statusLabell.text else { return }
+        
         self.endEditing(true)
-        if statusText != nil && isExpanded {
+        
+        if textField.text == "" && isExpanded {
+            //expandCompressStatusButton()
+            UIView.animate(withDuration: 2, delay: 0) {
+                self.alertStatusLabel.alpha = 1
+            } completion: {_ in
+                UIView.animate(withDuration: 2, delay: 0) {
+                    self.alertStatusLabel.alpha = 0
+                }
+            }
+        } else {
+            if statusText != nil && isExpanded {
             statusLabel.text = statusText
             textField.text = ""
-        }
+            }
         
+            //expandCompressStatusButton()
+        }
+    }
+
+    private func expandCompressStatusButton() {
         delegate?.statusButtonPressed(isTextFieldVisible: textField.isHidden, completion: {
             self.textField.isHidden.toggle()
         })
@@ -157,7 +178,6 @@ class ProfileHeaderView: UIView {
             self.isExpanded.toggle()
         }
     }
-
     
     @objc private func statusTextChanged() {
         statusText = textField.text

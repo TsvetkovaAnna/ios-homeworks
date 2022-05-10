@@ -1,9 +1,4 @@
-//
-//  MarginLabel.swift
-//  Navigation
-//
-//  Created by Anna Tsvetkova on 12.04.2022.
-//
+
 
 import UIKit
 

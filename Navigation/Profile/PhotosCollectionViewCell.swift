@@ -1,14 +1,13 @@
-//
-//  CollectionViewCell.swift
-//  Navigation
-//
-//  Created by Anna Tsvetkova on 12.04.2022.
-//
-
 
 import UIKit
 
+protocol PhotosCollectionViewCellDelegate: AnyObject {
+    func openPhotoFullScreen(_ image: UIImage?)
+}
+
 class PhotosCollectionViewCell: UICollectionViewCell {
+    
+    var delegate: PhotosCollectionViewCellDelegate?
     
     static let identifier = "PhotosCollectionViewCell"
     
@@ -16,9 +15,16 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     
     var image: UIImage?
     
+    var indexCell: IndexPath?
+    
+    var isPhotoInteractionEnabled = false {
+        didSet {
+            photoView.isUserInteractionEnabled = isPhotoInteractionEnabled
+        }
+    }
+    
     lazy var photoView: UIImageView = {
         let photoView = UIImageView()
-        //photoView.image = UIImage(named: "dog1")
         photoView.layer.cornerRadius = 6
         photoView.clipsToBounds = true
         photoView.backgroundColor = .white
@@ -55,7 +61,6 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     
     @objc func photoViewTapped() {
         print(#function)
+        delegate?.openPhotoFullScreen(photoView.image)
     }
-    
 }
-

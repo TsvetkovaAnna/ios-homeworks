@@ -1,9 +1,4 @@
-//
-//  PhotosViewController.swift
-//  Navigation
-//
-//  Created by Anna Tsvetkova on 12.04.2022.
-//
+
 
 import UIKit
 
@@ -25,14 +20,13 @@ class PhotosViewController: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.register(PhotosCollectionViewCell.self, forCellWithReuseIdentifier: PhotosCollectionViewCell.identifier)
         cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: defaultCellIdentifier)
-        //cv.isScrollEnabled = true
         cv.dataSource = self
         cv.delegate = self
         cv.backgroundColor = .systemGray6
         cv.translatesAutoresizingMaskIntoConstraints = false
         return cv
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -78,7 +72,7 @@ class PhotosViewController: UIViewController {
     
 }
 
-extension PhotosViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout/*, UICollectionViewDelegate*/ {
+extension PhotosViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         self.photos.count
@@ -102,10 +96,21 @@ extension PhotosViewController: UICollectionViewDataSource, UICollectionViewDele
             return returnDefaultCell(collectionView, indexPath)
         }
         cell.photoView.image = self.photos[indexPath.item]
+        cell.isPhotoInteractionEnabled = true
+        cell.delegate = self
+        cell.indexCell = indexPath
         return cell
     }
     
     private func returnDefaultCell(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> UICollectionViewCell {
         collectionView.dequeueReusableCell(withReuseIdentifier: defaultCellIdentifier, for: indexPath)
+    }
+}
+
+extension PhotosViewController: PhotosCollectionViewCellDelegate {
+    func openPhotoFullScreen(_ image: UIImage?) {
+        let ava = AvatarGestureViewController(with: image)
+        ava.modalTransitionStyle = .flipHorizontal//.partialCurl
+        present(ava, animated: true)
     }
 }

@@ -1,9 +1,4 @@
-//
-//  PhotosTableViewCell.swift
-//  Navigation
-//
-//  Created by Anna Tsvetkova on 12.04.2022.
-//
+
 
 import UIKit
 
@@ -23,11 +18,6 @@ class PhotosTableViewCell: UITableViewCell {
     
     private lazy var backView: UIView = {
         let view = UIView()
-    //    view.clipsToBounds = true
-//        view.layer.cornerRadius = 10
-//        view.layer.maskedCorners = [
-//            .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner
-//        ]
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -46,7 +36,6 @@ class PhotosTableViewCell: UITableViewCell {
         cv.dataSource = self
         cv.delegate = self
         cv.allowsSelection = true
-        //cv.setContentCompressionResistancePriority(UILayoutPriority(1000), for: .vertical)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showAllPhotos)))
         return cv
@@ -60,7 +49,6 @@ class PhotosTableViewCell: UITableViewCell {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.distribution = .equalCentering
-        //stack.setContentCompressionResistancePriority(UILayoutPriority(1000), for: .vertical)
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.spacing = 12
         return stack
@@ -70,7 +58,6 @@ class PhotosTableViewCell: UITableViewCell {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.distribution = .equalCentering
-        //stack.setContentCompressionResistancePriority(UILayoutPriority(250), for: .vertical)
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
@@ -79,8 +66,6 @@ class PhotosTableViewCell: UITableViewCell {
         let arrow = UIButton()
         arrow.backgroundColor = .white
         arrow.setBackgroundImage(UIImage(systemName: "arrow.right"), for: .normal)
-        //arrow.addTarget(self, action: #selector(openPhotos), for: .touchUpInside)
-        //arrow.translatesAutoresizingMaskIntoConstraints = false
         arrow.addTarget(self, action: #selector(showAllPhotos), for: .touchUpInside)
         return arrow
     }()
@@ -91,7 +76,6 @@ class PhotosTableViewCell: UITableViewCell {
         label.textColor = .black
         label.backgroundColor = .clear
         label.font = UIFont.boldSystemFont(ofSize: 24)
-        //label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -105,14 +89,9 @@ class PhotosTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    @objc private func openPhotos() {
-//        guard let photosViewController = PhotosViewController() as? UINavigationController else { return }
-//        //navigationController?.pushViewController(photosViewController, animated: true)
-//        UINavigationController.pushViewController(photosViewController)
-//    }
     
     private func drawSelf() {
-        //backgroundColor = .gray
+
         self.contentView.addSubview(backView)
         let leftBV = backView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor)
         let rightBV = backView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor)
@@ -126,7 +105,6 @@ class PhotosTableViewCell: UITableViewCell {
         
         stackLabelButton.addArrangedSubview(label)
         stackLabelButton.addArrangedSubview(arrowButton)
-        //let arrowY = arrowButton.centerYAnchor.constraint(equalTo: label.centerYAnchor)
         
         backView.addSubview(collectionView)
         let leftCV = collectionView.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 12)
@@ -138,9 +116,8 @@ class PhotosTableViewCell: UITableViewCell {
         let fullWidth = UIScreen.main.bounds.width
         let imageWidth = (fullWidth - 3*spacing) / 4
         let heightCV = collectionView.heightAnchor.constraint(equalToConstant: imageWidth)
-        //heightCV = collectionView.heightAnchor.constraint(equalTo: collectionView.widthAnchor, multiplier: imageWidth/fullWidth)
-        //UIDevice().orientation
-        NSLayoutConstraint.activate([leftBV, rightBV, bottomBV, topBV/*, left, right, top*/, leftCV, rightCV,topCV, bottomCV, leftSL, rightSL, topSL, heightCV])
+
+        NSLayoutConstraint.activate([leftBV, rightBV, bottomBV, topBV, leftCV, rightCV,topCV, bottomCV, leftSL, rightSL, topSL, heightCV])
         
         for i in 1...23 {
             if let photo = UIImage(named: "d\(i)") {
@@ -187,7 +164,6 @@ extension PhotosTableViewCell: UICollectionViewDelegateFlowLayout, UICollectionV
             return returnDefaultCell(collectionView, indexPath)
         }
         cell.photoView.image = photos[indexPath.item]
-        //cell.image = UIImage(named: photos[indexPath.row])
         return cell
     }
     
