@@ -1,3 +1,4 @@
+
 import UIKit
 
 class InfoViewController: UIViewController {
@@ -5,7 +6,7 @@ class InfoViewController: UIViewController {
     lazy var alertButton: UIButton = {
         let alertButton = RoundedButton(cornerRadius: UIScreen.main.bounds.width * 0.05)
         alertButton.addTarget(self, action: #selector(showAlert), for: .touchUpInside)
-        alertButton.backgroundColor = .systemCyan
+        alertButton.backgroundColor = UIColor(named: "AccentColor")
         alertButton.tintColor = .orange
         alertButton.setTitle("Show Alert", for: .normal)
         return alertButton
@@ -15,11 +16,6 @@ class InfoViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .orange
         alertButtonConstraints()
-        //showAlert()
-//        showAlertButton.layer.cornerRadius = showAlertButton.frame.width*0.1
-//        showAlertButton.layer.masksToBounds = true
-        
-        // Do any additional setup after loading the view.
     }
     
     func alertButtonConstraints() {
@@ -46,17 +42,4 @@ class InfoViewController: UIViewController {
         present(alertController, animated: true)
     }
     
-    
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

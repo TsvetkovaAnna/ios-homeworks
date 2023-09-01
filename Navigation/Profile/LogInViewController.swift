@@ -1,17 +1,31 @@
-//
-//  LogInViewController.swift
-//  Navigation
-//
-//  Created by Anna Tsvetkova on 26.03.2022.
-//
+
 
 import UIKit
 
-class LogInViewController: UIViewController {
+final class LogInViewController: UIViewController {
 
     private var accentColor = UIColor(named: "AccentColor")
     
     private var loginButtonHeight: CGFloat = 50
+    
+    private var loginButtonTopConstraint: NSLayoutConstraint?
+    
+    private var isAlertAnimationBlocked = false
+    
+    private let trueLogin = "note@this.dog"
+    
+    private let truePassword = "222222"
+    
+    private lazy var alertPasswordLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Password should be not shorter then 6 symbols"
+        label.backgroundColor = .white
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .red
+        label.alpha = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     lazy var loginButton: UIButton = {
         let loginButton = RoundedButton(cornerRadius: 10)
@@ -45,7 +59,6 @@ class LogInViewController: UIViewController {
     
     private lazy var contentView: UIView = {
         let contentView = UIView()
-        //customView.backgroundColor = .red
         contentView.translatesAutoresizingMaskIntoConstraints = false
         return contentView
     }()
@@ -63,28 +76,24 @@ class LogInViewController: UIViewController {
         return logoVK
     }()
     
-    private lazy var login: IndentTextField = {
+    private lazy var loginField: IndentTextField = {
         let login = IndentTextField()
         login.textColor = .black
         login.font = UIFont.systemFont(ofSize: 16)
         login.tintColor = accentColor
         login.autocapitalizationType = .none
-//        login.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: login.frame.height))
-//        login.leftViewMode = .always
         login.placeholder = "Email or phone"
         login.translatesAutoresizingMaskIntoConstraints = false
         return login
     }()
     
-    private lazy var password: IndentTextField = {
+    private lazy var passwordField: IndentTextField = {
         let password = IndentTextField()
         stackView.axis = .vertical
         password.textColor = .black
         password.font = UIFont.systemFont(ofSize: 16)
         password.tintColor = accentColor
         password.autocapitalizationType = .none
-//        password.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: password.frame.height))
-//        password.leftViewMode = .always
         password.isSecureTextEntry = true
         password.placeholder = "Password"
         password.translatesAutoresizingMaskIntoConstraints = false
@@ -93,9 +102,9 @@ class LogInViewController: UIViewController {
     
     lazy var stackView: UIStackView = {
         let stackView = UIStackView()
-       // stackView.axis = .vertical
         stackView.layer.cornerRadius = 10
         stackView.layer.borderWidth = 0.5
+        stackView.clipsToBounds = true
         stackView.layer.borderColor = UIColor.lightGray.cgColor
         stackView.backgroundColor = .systemGray6
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -108,7 +117,7 @@ class LogInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.isHidden = true //не скрылся навигейшн!!
+        self.navigationController?.navigationBar.isHidden = true
         self.view.backgroundColor = .white
         drawSelf()
     }
@@ -118,16 +127,15 @@ class LogInViewController: UIViewController {
         
         view.addGestureRecognizer(tapRecognizer)
         
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        
         super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         view.removeGestureRecognizer(tapRecognizer)
         
@@ -140,8 +148,6 @@ class LogInViewController: UIViewController {
         
         let offsetY = keyboardFrameValue.cgRectValue.height
         scrollView.setContentOffset(CGPoint(x: 0, y: offsetY), animated: true)
-        
-        //scrollView.frame -
     }
     
     @objc func keyboardWillHide() {
@@ -173,17 +179,13 @@ class LogInViewController: UIViewController {
     }
     
     @objc private func keyboardDidHide(_ notification: Notification) {
-        keyboardForcedHide()
-    }
-    
-    @objc private func keyboardForcedHide() {
-        view.endEditing(true)
+        print(#function)
         scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
     //-----------------
     private func drawSelf() {
-        //scrollView.endEditing(true)
+        
         view.addSubview(scrollView)
         let scrollViewTop = scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         let scrollViewBottom = scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
@@ -191,16 +193,14 @@ class LogInViewController: UIViewController {
         let scrollViewTrailing = scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         
         scrollView.addSubview(contentView)
-        //contentView.backgroundColor = .systemTeal
         let customViewTop = contentView.topAnchor.constraint(equalTo: scrollView.topAnchor)
-        //let customViewHeight = contentView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)//522.5)
         let customViewHeight = contentView.heightAnchor.constraint(equalToConstant: 700)
         let customViewWidth = contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         let customViewX = contentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor)
         
         contentView.addSubview(loginButton)
         let buttonHeight = loginButton.heightAnchor.constraint(equalToConstant: loginButtonHeight)
-        let buttonTop = loginButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16)
+        loginButtonTopConstraint = loginButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16)
         let buttonLeading = loginButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
         let buttonCenterX = loginButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         
@@ -211,25 +211,90 @@ class LogInViewController: UIViewController {
         let logoXConstraint = logoVK.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         
         contentView.addSubview(stackView)
-        stackView.addArrangedSubview(login)
+        stackView.addArrangedSubview(loginField)
         stackView.addArrangedSubview(separator)
-        stackView.addArrangedSubview(password)
+        stackView.addArrangedSubview(passwordField)
         let stackLeadingConstraint = stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
         let stackCenterXConstraint = stackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         let stackTopConstraint = stackView.topAnchor.constraint(equalTo: logoVK.bottomAnchor, constant: 120)
         let stackHeightConstraint = stackView.heightAnchor.constraint(equalToConstant: 100.5)
-        let loginHeightConstraint = login.heightAnchor.constraint(equalToConstant: 50)
-        let passwordHeightConstraint = password.heightAnchor.constraint(equalToConstant: 50)
+        let loginHeightConstraint = loginField.heightAnchor.constraint(equalToConstant: 50)
+        let passwordHeightConstraint = passwordField.heightAnchor.constraint(equalToConstant: 50)
         let separatorHeight = separator.heightAnchor.constraint(equalToConstant: 0.5)
-        NSLayoutConstraint.activate([scrollViewTop, scrollViewBottom, scrollViewLeading, scrollViewTrailing, stackLeadingConstraint, stackCenterXConstraint, stackTopConstraint, stackHeightConstraint, loginHeightConstraint, passwordHeightConstraint, logoXConstraint, logoTopConstraint, logoWidthConstraint, logoHeightConstraint, separatorHeight, buttonTop, buttonHeight, buttonLeading, buttonCenterX, customViewTop, customViewWidth, customViewHeight, customViewX])
-        //stackView.endEditing(true)
-        //login.resignFirstResponder()
-        //password.resignFirstResponder()
+        
+        contentView.addSubview(alertPasswordLabel)
+        let alertTop = alertPasswordLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16)
+        let alertX = alertPasswordLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+
+        NSLayoutConstraint.activate([scrollViewTop, scrollViewBottom, scrollViewLeading, scrollViewTrailing, stackLeadingConstraint, stackCenterXConstraint, stackTopConstraint, stackHeightConstraint, loginHeightConstraint, passwordHeightConstraint, logoXConstraint, logoTopConstraint, logoWidthConstraint, logoHeightConstraint, separatorHeight, loginButtonTopConstraint, buttonHeight, buttonLeading, buttonCenterX, customViewTop, customViewWidth, customViewHeight, customViewX, alertTop, alertX].compactMap({ $0 }))
+    
     }
     
     @objc private func makeLogin() {
-        let profileViewController = ProfileViewController()
-        navigationController?.pushViewController(profileViewController, animated: true)
+        
+        guard !isAlertAnimationBlocked,
+              let login = loginField.text,
+              let password = passwordField.text
+        else { return }
+        
+        if login == "" {
+            self.loginField.backgroundColor = .purple
+            self.loginField.backgroundColor = self.loginField.backgroundColor?.withAlphaComponent(0.5)
+                UIView.animate(withDuration: 0.3, delay: 1) {
+                    self.loginField.backgroundColor = .clear
+                    self.view.layoutIfNeeded()
+            }
+        }
+
+        if password == "" {
+            self.passwordField.backgroundColor = .purple
+            self.passwordField.backgroundColor = self.passwordField.backgroundColor?.withAlphaComponent(0.5)
+                UIView.animate(withDuration: 0.3, delay: 1) {
+                    self.passwordField.backgroundColor = .clear
+                    self.view.layoutIfNeeded()
+            }
+        }
+        
+        if password.count < 6 && password.count > 0 {
+            alertAnimation()
+        } else if password.count > 5 {
+            if trueLogin.isEmail() && login == trueLogin && password == truePassword {
+            navigationController?.pushViewController(ProfileViewController(), animated: true)
+            } else if login.count > 0 {
+                let alertController = UIAlertController(title: "Login Failed", message: "Wrong Name or Password", preferredStyle: .alert)
+                let ok = UIAlertAction(title: "ok", style: .cancel) { _ in
+                    print("ok pushed")
+                }
+                alertController.addAction(ok)
+                present(alertController, animated: true)
+            }
+        }
+    }
+    
+    func alertAnimation() {
+        isAlertAnimationBlocked = true
+        self.passwordField.backgroundColor = .purple
+        self.passwordField.backgroundColor = self.passwordField.backgroundColor?.withAlphaComponent(0.5)
+        UIView.animate(withDuration: 0.3, delay: 0) {
+            print("animate")
+            self.loginButtonTopConstraint?.constant += 20
+            self.view.layoutIfNeeded()
+            UIView.animate(withDuration: 0.3, delay: 0.15) {
+                self.alertPasswordLabel.alpha = 1
+            }
+        } completion: { _ in
+            UIView.animate(withDuration: 0.3, delay: 3) {
+                print("revert")
+                self.alertPasswordLabel.alpha = 0
+                UIView.animate(withDuration: 0.3, delay: 3.15) {
+                    self.passwordField.backgroundColor = .clear
+                    self.loginButtonTopConstraint?.constant -= 20
+                    self.view.layoutIfNeeded()
+                } completion: { _ in
+                    self.isAlertAnimationBlocked = false
+                }
+            }
+        }
     }
 
 }
